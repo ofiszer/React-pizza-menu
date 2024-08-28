@@ -74,11 +74,14 @@ function Menu() {
       <h2>Our menu</h2>
 
       {numPizzas > 0 ? (
-        <ul className="pizzas">
-          {pizzas.map((pizza) => (
-            <Pizza pizzaObject={pizza} key={pizza.name} />
-          ))}
-        </ul>
+        <React.Fragment>
+          <p>vera qualità italiana</p>
+          <ul className="pizzas">
+            {pizzas.map((pizza) => (
+              <Pizza pizzaObject={pizza} key={pizza.name} />
+            ))}
+          </ul>
+        </React.Fragment>
       ) : (
         <p>We're still working on our menu. Please come back later :-)</p>
       )}
@@ -111,18 +114,25 @@ function Menu() {
   );
 }
 
-function Pizza(props) {
-  console.log(props);
+function Pizza({ pizzaObject }) {
+  console.log(pizzaObject);
 
-  if (props.pizzaObject.soldOut) return null;
+  //if (pizzaObject.soldOut) return null;
 
   return (
-    <li className="pizza">
-      <img src={props.pizzaObject.photoName} alt={props.pizzaObject.name} />
+    <li className={`pizza ${pizzaObject.soldOut ? "sold-out" : ""}`}>
+      <img src={pizzaObject.photoName} alt={pizzaObject.name} />
       <div>
-        <h3>{props.pizzaObject.name}</h3>
-        <p>{props.pizzaObject.ingredients}</p>
-        <p>{props.pizzaObject.price}</p>
+        <h3>{pizzaObject.name}</h3>
+        <p>{pizzaObject.ingredients}</p>
+
+        {/*pizzaObject.soldOut ? (
+          <span>SOLD OUT</span>
+        ) : (
+          <span>{pizzaObject.price}</span>
+        )*/}
+
+        <span>{pizzaObject.soldOut ? "SOLD OUT" : pizzaObject.price}</span>
       </div>
     </li>
   );
@@ -151,12 +161,12 @@ function Footer() {
   //return React.createElement("footer", null, "We're currently open!");
 }
 
-function Order(props) {
+function Order({ closeHour, openHour }) {
   return (
     <div className="order">
       <p>
-        We're open until {props.closeHour}:00. Please, come in or place an order
-        online!
+        We're open from {openHour}:00 to {closeHour}:00. Please, come in or
+        place an order online!
       </p>
       <button className="btn">Order</button>
     </div>
